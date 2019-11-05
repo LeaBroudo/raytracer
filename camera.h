@@ -5,10 +5,14 @@
 
 class camera {
 public:
-    camera() {
-        ll_corner = vec3(-2.0, -1.0, 1.0);
-        horiz = vec3(4.0, 0.0, 0.0);
-        vert = vec3(0.0, 2.0, 0.0);
+    camera(float fov, float aspect) {
+        float angle = fov*M_PI/180;
+        float height_mid = tan(angle/2);
+        float width_mid = aspect * height_mid; 
+        
+        ll_corner = vec3(-1*width_mid, -1*height_mid, 1.0); // -1
+        horiz = vec3(2*width_mid, 0.0, 0.0);
+        vert = vec3(0.0, 2*height_mid, 0.0);
         orig = vec3(0.0, 0.0, 0.0);
     }
 

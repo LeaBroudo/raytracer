@@ -36,7 +36,7 @@ int main() {
     //surface *world = random_scene();
 
     //Camera
-    camera cam;
+    camera cam(90, float(xPos)/float(yPos));
 
     for (int i = yPos-1; i >= 0; i--) {
 		for (int j = 0; j < xPos; j++) {

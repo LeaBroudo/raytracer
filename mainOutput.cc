@@ -11,9 +11,9 @@ vec3 color(const ray& r, surface *world, int depth);
 surface *random_scene();
 
 int main() {
-	int xPos = 300;
-	int yPos = 150;
-    int sPos = 10;
+	int xPos = 500;
+	int yPos = 300;
+    int sPos = 50;
 
 	std::cout << "P3\n" << xPos << " " << yPos << "\n255\n";
     
@@ -36,7 +36,12 @@ int main() {
     //surface *world = random_scene();
 
     //Camera
-    camera cam(vec3(-2,2,1), vec3(0,0,-1), vec3(0,1,0), 90, float(xPos)/float(yPos));
+    vec3 origin(3,3,2);
+    vec3 dest(0,0,-1);
+    float focus_dist = (origin-dest).length();
+    float aperture = 2.0;
+
+    camera cam(origin, dest, vec3(0,1,0), 20, float(xPos)/float(yPos), aperture, focus_dist);
 
     for (int i = yPos-1; i >= 0; i--) {
 		for (int j = 0; j < xPos; j++) {

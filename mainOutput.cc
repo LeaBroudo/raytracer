@@ -20,10 +20,10 @@ int main() {
     //Spheres
     ///*
     surface *list[4];
-    list[0] = new sphere(vec3(0,0,1), .5, new lambert(vec3(0.8, 0.3, 0.3)));
-    list[1] = new sphere(vec3(1,0,1), .5, new metal(vec3(0.0, 0.3, 0.3), 1.0));
+    list[0] = new sphere(vec3(0,0,-1), .5, new lambert(vec3(0.8, 0.3, 0.3)));
+    list[1] = new sphere(vec3(1,0,-1), .5, new metal(vec3(0.0, 0.3, 0.3), 1.0));
     list[2] = new sphere(vec3(0,-100.5,-1), 100, new metal(vec3(0.8, 0.6, 0.2), 0.01));
-    list[3] = new sphere(vec3(-1,0,1), .5, new dielectric(1.5));
+    list[3] = new sphere(vec3(-1,0,-1), .5, new dielectric(1.5));
     surface *world = new surfaceList(list, 4);
     //*/
     /*
@@ -36,7 +36,7 @@ int main() {
     //surface *world = random_scene();
 
     //Camera
-    camera cam(90, float(xPos)/float(yPos));
+    camera cam(vec3(-2,2,1), vec3(0,0,-1), vec3(0,1,0), 90, float(xPos)/float(yPos));
 
     for (int i = yPos-1; i >= 0; i--) {
 		for (int j = 0; j < xPos; j++) {

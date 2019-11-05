@@ -36,18 +36,8 @@ int main() {
     //surface *world = random_scene();
 
     //Camera
+    camera cam;
 
-    vec3 og(1,3,2);
-    vec3 dest(0,-1,0);
-    //vec3 og(4,12,8);
-    //vec3 dest(0,-1,1);
-    vec3 up = vec3(0,1,0);
-    float focus_dist = 10;
-    float aperture = 0.1;
-
-    camera cam(og, dest, up, 20, float(xPos)/float(yPos), aperture, focus_dist);
-
-    
     for (int i = yPos-1; i >= 0; i--) {
 		for (int j = 0; j < xPos; j++) {
 

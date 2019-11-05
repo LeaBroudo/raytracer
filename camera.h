@@ -5,24 +5,11 @@
 
 class camera {
 public:
-    camera(vec3 og, vec3 visTo, vec3 ogUp, float vfov, float aspect, float aperture, float focus) {
-        
-        //Get ratios
-        float angle = (M_PI/180) * vfov;
-        float height_mid = tan(angle/2);
-        float width_mid = aspect * height_mid;
-        lens_rad = aperture/2;
-
-        //vectors
-        vec3 w = unit_vector(og - visTo);
-        vec3 u = unit_vector(cross(ogUp, w));
-        vec3 v = cross(w,u);
-        
-        //Create Dimensions
-        orig = og;
-        ll_corner = orig - (width_mid * u * focus) - (height_mid * v * focus) - (focus * w);
-        horiz = 2 * width_mid * u;
-        vert = 2 * height_mid * v;
+    camera() {
+        ll_corner = vec3(-2.0, -1.0, 1.0);
+        horiz = vec3(4.0, 0.0, 0.0);
+        vert = vec3(0.0, 2.0, 0.0);
+        orig = vec3(0.0, 0.0, 0.0);
     }
 
     vec3 orig;

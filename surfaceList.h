@@ -29,6 +29,28 @@ public:
         return is_hit;
     }
 
+    virtual bool bounding_box(float t0, float t1, bound& box) const {
+        
+        bound tmp; 
+        if (listLen > 0 && list[0]->bounding_box(t0, t1, tmp)) {
+            box = tmp; 
+
+            for (int i=1; i < listLen; i++) {
+                
+                if (list[i]->bounding_box(t0, t1, tmp)) {
+                    box = parent_bound(box, tmp); 
+                } else {
+                    return false; 
+                }
+
+            }
+
+            return true; 
+        }
+        return false; 
+    }
+
+
 };
 
 #endif

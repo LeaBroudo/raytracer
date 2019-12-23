@@ -6,6 +6,8 @@
 #include "camera.h" 
 #include "materials.h"
 #include "random.h"   
+#include "bound.h"  
+#include "boundNode.h"  
 
 vec3 color(const ray& r, surface *world, int depth);
 surface *random_scene();

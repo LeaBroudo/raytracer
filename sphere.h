@@ -45,6 +45,14 @@ public:
         return false; 
     }
 
+    virtual bool bounding_box(float t0, float t1, bound& box) const {
+        vec3 min = center - vec3(radius, radius, radius); 
+        vec3 max = center + vec3(radius, radius, radius); 
+
+        box = bound(min, max); 
+        return true; 
+    }
+
 };
 
 class fast_sphere: public surface {
@@ -66,9 +74,13 @@ public:
     float radius;
     material *mat_ptr;
 
+    vec3 center(float t) const {
+        return cen0 + (cen1-cen0) * ((t-t0) / (t1-t0));
+    }
+    
     virtual bool hit(const ray& r, float t_min, float t_max, hit_record& rec) const {
         
-        vec3 center = cen0 + (cen1-cen0) * ((r.time()-t0) / (t1-t0));
+        vec3 center = center(r.time());
         
         vec3 AC = r.origin() - center;
         vec3 B = r.direction();
@@ -101,6 +113,20 @@ public:
 
         }
         return false; 
+    }
+
+    virtual bool bounding_box(float t0, float t1, bound& box) const {
+        
+        vec3 min_0 = center(t0) - vec3(radius, radius, radius); 
+        vec3 max_0 = center(t0) + vec3(radius, radius, radius); 
+        bound box_0 = (min_0, max_0);
+
+        vec3 min_1 = center(t1) - vec3(radius, radius, radius); 
+        vec3 max_1 = center(t1) + vec3(radius, radius, radius); 
+        bound box_1 = (min_1, max_1);
+
+        box = parent_bound(box_0, box_1); 
+        return true; 
     }
 
 };

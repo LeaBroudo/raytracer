@@ -1,6 +1,6 @@
 #ifndef MATERIALH
 #define MATERIALH
-
+#include "texture.h"
 #include "random.h"
 
 vec3 reflect(const vec3& V, const vec3& N);
@@ -20,14 +20,14 @@ public:
 
 class lambert : public material {
 public: 
-    lambert(const vec3& a) : albedo(a) {}
+    lambert(texture *a) : albedo(a) {}
     
-    vec3 albedo;
+    texture *albedo;
     
     virtual bool scatter(const ray& r_in, const hit_record& rec, vec3& attenuation, ray& scattered) const {
-        vec3 target = rec.normal + rand_unit_rad();
-        scattered = ray(rec.p, target-rec.p, r_in.time());
-        attenuation = albedo;
+        vec3 target = rec.p + rec.normal + rand_unit_rad();
+        scattered = ray(rec.p, target-rec.p);
+        attenuation = albedo -> value(0,0,rec.p);
 
         return true;
     }

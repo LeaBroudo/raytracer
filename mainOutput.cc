@@ -24,25 +24,31 @@ int main() {
     //Spheres
     ///*
     surface *list[4];      
-    //list[0] = new sphere(vec3(0,0,1), .5, new lambert(vec3(0.8, 0.3, 0.3))); 
-    list[0] = new fast_sphere(vec3(0,0,1), vec3(0, 0, 10*get_rand()), 0, 1, .5, new lambert(vec3(0.8, 0.3, 0.3)));
+    //list[0] = new sphere(vec3(0,0,1), .5, new lambert(new constant_texture(vec3(0.8, 0.3, 0.3)))); 
+    list[0] = new fast_sphere(vec3(0,0,1), vec3(0, 0, 10*get_rand()), 0, 1, .5, new lambert(new constant_texture(vec3(0.8, 0.3, 0.3))));
     list[1] = new sphere(vec3(1,0,1), .5, new metal(vec3(0.0, 0.3, 0.3), 1.0));
-    list[2] = new sphere(vec3(0,-100.5,1), 100, new metal(vec3(0.8, 0.6, 0.2), 0.01));
+    
+    texture *check = new checkers(
+        new constant_texture(vec3(0.2, 0.3, 0.1)),
+        new constant_texture(vec3(0.9, 0.9, 0.9))
+    );
+    
+    list[2] = new sphere(vec3(0,-100.5,1), 100, new lambert(check));
     list[3] = new sphere(vec3(-1,0,1), .5, new dielectric(1.5));
     surface *world = new surfaceList(list, 4);
     //*/
     /*
     surface *list[3];
     list[0] = new sphere(vec3(0, 1, 0), 1.0, new dielectric(1.5));
-    list[1] = new sphere(vec3(-4, 1, 0), 1.0, new lambert(vec3(0.4, 0.2, 0.1)));
+    list[1] = new sphere(vec3(-4, 1, 0), 1.0, new lambert(new constant_texture(vec3(0.4, 0.2, 0.1))));
     list[2] = new sphere(vec3(4, 1, 0), 1.0, new metal(vec3(0.7, 0.6, 0.5), 0.0));
     surface *world = new surfaceList(list, 3);
     */
     /*
     surface *list[4];
-    list[0] =  new sphere(vec3(0,-7000,0), 7000, new lambert(vec3(0.5, 0.5, 0.5)));
+    list[0] =  new sphere(vec3(0,-7000,0), 7000, new lambert(new constant_texture(vec3(0.5, 0.5, 0.5))));
     list[1] = new sphere(vec3(0, 1, 1), 1.0, new dielectric(1.5));
-    list[2] = new sphere(vec3(-4, 1, 1), 1.0, new lambert(vec3(0.4, 0.2, 0.1)));
+    list[2] = new sphere(vec3(-4, 1, 1), 1.0, new lambert(new constant_texture(vec3(0.4, 0.2, 0.1))));
     list[3] = new sphere(vec3(4, 0.2, 1), 0.2, new metal(vec3(0.7, 0.6, 0.5), 0.0));
     surface *world = new surfaceList(list, 4);
     */
@@ -53,15 +59,15 @@ int main() {
     surface *list[10];
     list[0] =  new sphere(vec3(0,-500,0), 500, new metal(vec3(0.7, 0.6, 0.5), 0.0)); //metal!!
 
-    list[1] = new sphere(vec3(4.8, 0.17, 1), 0.2, new lambert(vec3(.99, .13, 0.00)));
-    list[2] = new sphere(vec3(4.2, 0.38, 1), 0.4, new lambert(vec3(.99, .38, 0.29)));
-    list[3] = new sphere(vec3(3.2, 0.59, 1), 0.6, new lambert(vec3(.996, .58, .519)));
-    list[4] = new sphere(vec3(1.8, 0.8, 1), 0.8, new lambert(vec3(.996, .71, .67)));
+    list[1] = new sphere(vec3(4.8, 0.17, 1), 0.2, new lambert(new constant_texture(vec3(.99, .13, 0.00))));
+    list[2] = new sphere(vec3(4.2, 0.38, 1), 0.4, new lambert(new constant_texture(vec3(.99, .38, 0.29))));
+    list[3] = new sphere(vec3(3.2, 0.59, 1), 0.6, new lambert(new constant_texture(vec3(.996, .58, .519))));
+    list[4] = new sphere(vec3(1.8, 0.8, 1), 0.8, new lambert(new constant_texture(vec3(.996, .71, .67))));
     list[5] = new sphere(vec3(0, 1.0, 1), 1.0, new dielectric(1.5));
-    list[6] = new sphere(vec3(-1.8, 0.8, 1), 0.8, new lambert(vec3(.80, .85, .99)));
-    list[7] = new sphere(vec3(-3.2, 0.59, 1), 0.6, new lambert(vec3(0.59, 0.6, .99)));
-    list[8] = new sphere(vec3(-4.2, 0.38, 1), 0.4, new lambert(vec3(0.27, 0.36, 0.99)));
-    list[9] = new sphere(vec3(-4.8, 0.17, 1), 0.2, new lambert(vec3(0.0, 0.12, 0.99)));
+    list[6] = new sphere(vec3(-1.8, 0.8, 1), 0.8, new lambert(new constant_texture(vec3(.80, .85, .99))));
+    list[7] = new sphere(vec3(-3.2, 0.59, 1), 0.6, new lambert(new constant_texture(vec3(0.59, 0.6, .99))));
+    list[8] = new sphere(vec3(-4.2, 0.38, 1), 0.4, new lambert(new constant_texture(vec3(0.27, 0.36, 0.99))));
+    list[9] = new sphere(vec3(-4.8, 0.17, 1), 0.2, new lambert(new constant_texture(vec3(0.0, 0.12, 0.99))));
     surface *world = new surfaceList(list, 10);
     */
 
@@ -153,7 +159,7 @@ vec3 color(const ray& r, surface *world, int depth) {
     return startValue + endValue;
     
 }
-
+/*
 surface *random_scene() {
     int n = 500;
     surface **list = new surface*[n+1];
@@ -193,3 +199,4 @@ surface *random_scene() {
 
     return new surfaceList(list,i);
 }
+*/

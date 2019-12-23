@@ -20,4 +20,14 @@ vec3 rand_unit_rad() {
     
 }
 
+vec3 rand_unit_disk() {
+    vec3 p = 2.0*vec3(get_rand(), get_rand(), 0) - vec3(1,1,0);
+
+    while (dot(p,p) >= 1.0) {
+        p = 2.0*vec3(get_rand(), get_rand(), 0) - vec3(1,1,0);
+    }
+
+    return p;
+}
+
 #endif

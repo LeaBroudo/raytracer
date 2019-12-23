@@ -1,6 +1,7 @@
 #ifndef SPHEREH
 #define SPHEREH
 #include "surface.h"
+#include "bound.h"
 
 class sphere: public surface {
 public:
@@ -80,9 +81,9 @@ public:
     
     virtual bool hit(const ray& r, float t_min, float t_max, hit_record& rec) const {
         
-        vec3 center = center(r.time());
+        vec3 cen = center(r.time());
         
-        vec3 AC = r.origin() - center;
+        vec3 AC = r.origin() - cen;
         vec3 B = r.direction();
         
         float a = dot(B, B);
@@ -95,7 +96,7 @@ public:
             if (t > t_min && t < t_max ) {
                 rec.t = t;
                 rec.p = r.point_at_param(t);
-                rec.normal = (rec.p - center) / radius;
+                rec.normal = (rec.p - cen) / radius;
                 rec.mat_ptr = mat_ptr;
 
                 return true; 
@@ -105,7 +106,7 @@ public:
             if (t > t_min && t < t_max) {
                 rec.t = t;
                 rec.p = r.point_at_param(t);
-                rec.normal = (rec.p - center) / radius;
+                rec.normal = (rec.p - cen) / radius;
                 rec.mat_ptr = mat_ptr;
 
                 return true;
@@ -119,11 +120,11 @@ public:
         
         vec3 min_0 = center(t0) - vec3(radius, radius, radius); 
         vec3 max_0 = center(t0) + vec3(radius, radius, radius); 
-        bound box_0 = (min_0, max_0);
+        bound box_0(min_0, max_0);
 
         vec3 min_1 = center(t1) - vec3(radius, radius, radius); 
         vec3 max_1 = center(t1) + vec3(radius, radius, radius); 
-        bound box_1 = (min_1, max_1);
+        bound box_1(min_1, max_1);
 
         box = parent_bound(box_0, box_1); 
         return true; 

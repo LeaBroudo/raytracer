@@ -13,22 +13,30 @@ p(t) = A + t * B
 class ray {
 public:
     ray() {}
-    ray(const vec3& a, const vec3& b) { 
+    ray(const vec3& a, const vec3& b, float t = 0.0) { 
         A = a;
         B = b; 
+        T = t; 
     }
 
     vec3 A;
     vec3 B;
+    float T; 
 
     vec3 origin() const {
         return A;
     }
+
     vec3 direction() const {
         return B;
     }
-    vec3 point_at_param(float t) const {
-        return A + t * B; 
+
+    float time() const {
+        return T; 
+    }
+
+    vec3 point_at_param(float p) const {
+        return A + p * B; 
     }
 };
 

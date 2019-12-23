@@ -3,13 +3,13 @@
 #include "ray.h"
 #include "surfaceList.h"
 #include "sphere.h"
-#include "camera.h"
+#include "camera.h" 
 #include "materials.h"
-#include "random.h"
+#include "random.h"   
 
 vec3 color(const ray& r, surface *world, int depth);
 surface *random_scene();
-
+ 
 int main() {
 	int xPos = 2400;
 	int yPos = 2400;
@@ -21,8 +21,9 @@ int main() {
     
     //Spheres
     ///*
-    surface *list[4];
-    list[0] = new sphere(vec3(0,0,1), .5, new lambert(vec3(0.8, 0.3, 0.3)));
+    surface *list[4];      
+    //list[0] = new sphere(vec3(0,0,1), .5, new lambert(vec3(0.8, 0.3, 0.3))); 
+    list[0] = new fast_sphere(vec3(0,0,1), vec3(0, 0, 10*get_rand()), 0, 1, .5, new lambert(vec3(0.8, 0.3, 0.3)));
     list[1] = new sphere(vec3(1,0,1), .5, new metal(vec3(0.0, 0.3, 0.3), 1.0));
     list[2] = new sphere(vec3(0,-100.5,1), 100, new metal(vec3(0.8, 0.6, 0.2), 0.01));
     list[3] = new sphere(vec3(-1,0,1), .5, new dielectric(1.5));
@@ -96,7 +97,7 @@ int main() {
     //float focus_dist = (origin-dest).length();
     float aperture = 0.1;
 
-    camera cam(origin, dest, vec3(0,1,0), 20, float(xPos)/float(yPos), aperture, focus_dist);
+    camera cam(origin, dest, vec3(0,1,0), 20, float(xPos)/float(yPos), aperture, focus_dist, 0, 1);
 
     for (int i = yPos-1; i >= 0; i--) {
 		for (int j = 0; j < xPos; j++) {

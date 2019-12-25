@@ -1,3 +1,5 @@
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
 #include <iostream>
 #include "vec3.h"
 #include "ray.h"
@@ -8,6 +10,8 @@
 #include "random.h"   
 #include "bound.h"  
 #include "boundNode.h"  
+#include "rectangle.h"
+
 
 vec3 color(const ray& r, surface *world, int depth);
 surface *random_scene();
@@ -20,10 +24,10 @@ int main() {
 	//int yPos = 600;
 
 	std::cout << "P3\n" << xPos << " " << yPos << "\n255\n";
-    
+     
     //Spheres
     ///*
-    surface *list[4];      
+    surface *list[6];      
     //list[0] = new sphere(vec3(0,0,1), .5, new lambert(new constant_texture(vec3(0.8, 0.3, 0.3)))); 
     list[0] = new fast_sphere(vec3(0,0,1), vec3(0, 0, 10*get_rand()), 0, 1, .5, new lambert(new constant_texture(vec3(0.8, 0.3, 0.3))));
     list[1] = new sphere(vec3(1,0,1), .5, new metal(vec3(0.0, 0.3, 0.3), 1.0));
@@ -34,8 +38,14 @@ int main() {
     );
     
     list[2] = new sphere(vec3(0,-100.5,1), 100, new lambert(check));
-    list[3] = new sphere(vec3(-1,0,1), .5, new dielectric(1.5));
-    surface *world = new surfaceList(list, 4);
+    
+    int nx, ny, nn;
+    unsigned char *tex_data = stbi_load("earthmap.jpg", &nx, &ny, &nn, 0);
+    
+    list[3] = new sphere(vec3(-1,0,1), .5, new lambert(new image(tex_data, nx, ny)));
+    list[4] = new rect_xy(3, 5, 1, 3, -2, new diffuse_light(new constant_texture(vec3(4,4,4))));
+    list[5] = new sphere(vec3(1.25, 0, 1.25), 2, new diffuse_light(new constant_texture(vec3(4,4,4))));
+    surface *world = new surfaceList(list, 6);
     //*/
     /*
     surface *list[3];
@@ -138,25 +148,17 @@ vec3 color(const ray& r, surface *world, int depth) {
         
         ray scattered;
         vec3 attenuation;
+        vec3 emitted = rec.mat_ptr -> emitted(rec.u, rec.v, rec.p); 
         int maxDepth = 50;
 
         if (depth < maxDepth && rec.mat_ptr -> scatter(r, rec, attenuation, scattered)) {
-            return attenuation * color(scattered, world, depth+1);
+            return emitted + attenuation * color(scattered, world, depth+1);
         } 
 
-        return vec3(0.0, 0.0, 0.0);
+        return emitted; 
     }
     
-    //blended value = (1-t)*startValue +  t*endValue
-    vec3 direction = unit_vector(r.direction());
-    float t = 0.5 * (direction.y() + 1.0);
-    //vec3 startValue = (1.0-t)*vec3(1.0,1.0,1.0);
-    //vec3 endValue = t*vec3(0.5,0.7,1.0);
-    //vec3 startValue = (1-t)*vec3(.43,.56,.99);
-    vec3 startValue = (1-t)*vec3(1,1,1);
-    vec3 endValue = t*vec3(.16,.2,.35);
-
-    return startValue + endValue;
+    return vec3(0.0, 0.0, 0.0);
     
 }
 /*

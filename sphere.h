@@ -2,6 +2,15 @@
 #define SPHEREH
 #include "surface.h"
 #include "bound.h"
+#include <float.h>
+
+void sphere_uv(const vec3& p, float& u, float& v) {
+    float phi = atan2(p.z(), p.x()); 
+    float theta = asin(p.y());
+
+    u = 1 - (phi + M_PI)/(2 * M_PI); 
+    v = (theta + M_PI/2)/M_PI; 
+}
 
 class sphere: public surface {
 public:
@@ -26,6 +35,7 @@ public:
             if (t > t_min && t < t_max ) {
                 rec.t = t;
                 rec.p = r.point_at_param(t);
+                sphere_uv((rec.p-center)/radius, rec.u, rec.v); 
                 rec.normal = (rec.p - center) / radius;
                 rec.mat_ptr = mat_ptr;
 
@@ -36,6 +46,7 @@ public:
             if (t > t_min && t < t_max) {
                 rec.t = t;
                 rec.p = r.point_at_param(t);
+                sphere_uv((rec.p-center)/radius, rec.u, rec.v); 
                 rec.normal = (rec.p - center) / radius;
                 rec.mat_ptr = mat_ptr;
 

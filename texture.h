@@ -39,4 +39,28 @@ public:
     texture *odd; 
 }; 
 
+class image : public texture {
+public:
+    image() {}
+    image(unsigned char *pixels, int a, int b) : img(pixels), nx(a), ny(b) {}
+
+    virtual vec3 value(float u, float v, const vec3& p) const {
+        int i = u * nx;
+        int j = (1-v) * ny - 0.001; 
+
+        if (i < 0) i = 0;
+        if (i > nx-1) i = nx-1; 
+
+        if (j < 0) j = 0;
+        if (j > ny-1) j = ny-1;  
+
+        int idx = 3*i + 3*nx*j; 
+        return vec3(int(img[idx])/255.0, int(img[idx+1])/255.0, int(img[idx+2])/255.0);
+    }
+
+    unsigned char *img; 
+    int nx, ny; 
+}; 
+
+
 #endif

@@ -20,13 +20,43 @@ int main() {
 	int xPos = 2400;
 	int yPos = 2400;
     int sPos = 10;
-    //int xPos = 600;
-	//int yPos = 600;
 
 	std::cout << "P3\n" << xPos << " " << yPos << "\n255\n";
      
+    surface **list = new surface*[4];
+    material *white = new lambert(new constant_texture(vec3(0.73, 0.73, 0.73)));
+    int i = 0; 
+    list[i++] = new sphere(vec3(0, 0, 0), 50, new diffuse_light(new constant_texture(vec3(4,4,4))));
+    list[i++] = new box(vec3(130, 0, 65), vec3(295, 165, 230), white);
+    list[i++] = new box(vec3(265, 0, 295), vec3(430, 330, 460), white);
+    list[i++] = new sphere(vec3(225, 225, 255), 20, new diffuse_light(new constant_texture(vec3(4,4,4))));
+    surface *world = new surfaceList(list, i);
+    
+    //Cornell Box
+    /*
+    surface **list = new surface*[8];
+    int i = 0;
+    material *red = new lambert(new constant_texture(vec3(0.65, 0.05, 0.05)));
+    material *white = new lambert(new constant_texture(vec3(0.73, 0.73, 0.73)));
+    material *green = new lambert(new constant_texture(vec3(0.12, 0.45, 0.15)));
+    material *light = new diffuse_light(new constant_texture(vec3(15, 15, 15)));
+
+    //list[i++] = new flip_normal(new rect_yz(0, 555, 0, 555, 555, green));
+    list[i++] = new flip_normal(new rect_yz(0, 555, 0, 555, 1000, green));
+    list[i++] = new rect_yz(0, 555, 0, 555, 0, red);
+    list[i++] = new rect_xz(213, 343, 227, 332, 400, light);
+    //list[i++] = new rect_xz(0, 555, 0, 555, -10, red); //ceiling
+    list[i++] = new flip_normal(new rect_xz(0, 555, 0, 555, 200, red)); //ceiling reversed
+    //list[i++] = new flip_normal(new rect_xz(0, 555, 0, 555, 0, white));
+    list[i++] = new rect_xz(0, 555, 0, 555, 0, white); //floor
+    list[i++] = new flip_normal(new rect_xy(0, 555, 0, 555, 55.5, white)); //back
+    list[i++] = new sphere(vec3(225, 225, 255), 20, new diffuse_light(new constant_texture(vec3(4,4,4))));
+    //list[i++] = new sphere(vec3(0, 0, 0), 50, new diffuse_light(new constant_texture(vec3(4,4,4))));
+
+    surface *world = new surfaceList(list, i);
+    */
     //Spheres
-    ///*
+    /*
     surface *list[6];      
     //list[0] = new sphere(vec3(0,0,1), .5, new lambert(new constant_texture(vec3(0.8, 0.3, 0.3)))); 
     list[0] = new fast_sphere(vec3(0,0,1), vec3(0, 0, 10*get_rand()), 0, 1, .5, new lambert(new constant_texture(vec3(0.8, 0.3, 0.3))));
@@ -46,7 +76,7 @@ int main() {
     list[4] = new rect_xy(3, 5, 1, 3, -2, new diffuse_light(new constant_texture(vec3(4,4,4))));
     list[5] = new sphere(vec3(1.25, 0, 1.25), 2, new diffuse_light(new constant_texture(vec3(4,4,4))));
     surface *world = new surfaceList(list, 6);
-    //*/
+    */
     /*
     surface *list[3];
     list[0] = new sphere(vec3(0, 1, 0), 1.0, new dielectric(1.5));
@@ -109,13 +139,18 @@ int main() {
     
     //Camera
     //vec3 origin(-15,4,-20); //for ball row
+    /*
     vec3 origin(7,4,-20);
     vec3 dest(0,0,0); 
     float focus_dist = 10.0;
-    //float focus_dist = (origin-dest).length();
     float aperture = 0.1;
+    */
+    vec3 origin(278, 278, -800);
+    vec3 dest(278,278,0);
+    float focus_dist = 10.0;
+    float aperture = 0.0;
 
-    camera cam(origin, dest, vec3(0,1,0), 20, float(xPos)/float(yPos), aperture, focus_dist, 0, 1);
+    camera cam(origin, dest, vec3(0,1,0), 40, float(xPos)/float(yPos), aperture, focus_dist, 0, 1);
 
     for (int i = yPos-1; i >= 0; i--) {
 		for (int j = 0; j < xPos; j++) {
